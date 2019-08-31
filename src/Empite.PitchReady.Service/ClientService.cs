@@ -2,7 +2,7 @@
 
 namespace Empite.PitchReady.Service
 {
-    public class Class1
+    public class ClientService : IClientServive
     {
     }
 }
