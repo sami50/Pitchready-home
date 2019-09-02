@@ -5,14 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Empite.PitchReady.Web.Models;
+using Microsoft.Extensions.Options;
 
 namespace Empite.PitchReady.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SiteSettings _siteSettings;
+
+        public HomeController(IOptions<SiteSettings> settings)
+        {
+            _siteSettings = settings.Value;
+
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View("Index", _siteSettings.Environment);
         }
 
         public IActionResult Privacy()
