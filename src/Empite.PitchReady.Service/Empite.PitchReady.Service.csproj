@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Empite.PtichReady.Entity\Empite.PitchReady.Entity.csproj" />
+    <ProjectReference Include="..\Empite.PitchReady.Entity\Empite.PitchReady.Entity.csproj" />
   </ItemGroup>
 
 </Project>
