@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Empite.PitchReady.Entity;
-using Empite.PitchReady.Web.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Empite.PitchReady.Web.Service

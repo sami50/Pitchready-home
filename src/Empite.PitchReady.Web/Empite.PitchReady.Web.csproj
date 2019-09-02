@@ -11,13 +11,17 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Empite.PitchReady.Entity\Empite.PitchReady.Entity.csproj" />
     <ProjectReference Include="..\Empite.PitchReady.Service\Empite.PitchReady.Service.csproj" />
-    <ProjectReference Include="..\Empite.PtichReady.Entity\Empite.PitchReady.Entity.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
