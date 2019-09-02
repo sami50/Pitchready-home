@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Empite.PitchReady.Service\Empite.PitchReady.Service.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
 </Project>
