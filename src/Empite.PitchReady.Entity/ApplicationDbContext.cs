@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Empite.PitchReady.Entity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Empite.PitchReady.Web.Data
+namespace Empite.PitchReady.Entity
 {
     public class ApplicationDbContext : IdentityDbContext
     {

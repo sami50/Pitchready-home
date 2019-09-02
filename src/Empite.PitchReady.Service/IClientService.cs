@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Empite.PitchReady.Entity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Empite.PitchReady.Entity;
 
-namespace Empite.PitchReady.Web.Service
+namespace Empite.PitchReady.Service
 {
     public interface IClientService
     {
