@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Empite.PitchReady.Web.Data;
+using Empite.PitchReady.Web.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IClientService = Empite.PitchReady.Web.Service.IClientService;
 
 namespace Empite.PitchReady.Web
 {
@@ -41,7 +43,7 @@ namespace Empite.PitchReady.Web
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddScoped<IClientService, ClientService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -72,6 +74,13 @@ namespace Empite.PitchReady.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                DbSeed.InitializePortle(serviceScope);
+                // Seed the database.
+            }
+
         }
     }
 }

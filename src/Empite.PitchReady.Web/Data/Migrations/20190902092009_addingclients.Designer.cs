@@ -3,14 +3,16 @@ using System;
 using Empite.PitchReady.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Empite.PitchReady.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190902092009_addingclients")]
+    partial class addingclients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,8 +25,6 @@ namespace Empite.PitchReady.Web.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.HasKey("ID");
 
