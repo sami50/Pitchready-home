@@ -36,7 +36,7 @@ namespace Empite.PitchReady.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.Configure<SiteSettings>(Configuration.GetSection("SiteSettings"));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));

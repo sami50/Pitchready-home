@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Empite.PitchReady.Web.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Empite.PitchReady.Web.Controllers
 {
@@ -13,9 +14,13 @@ namespace Empite.PitchReady.Web.Controllers
     public class ClientController : ControllerBase
     {
         private IClientService _clientService;
-        public ClientController(IClientService clientService)
+        private readonly SiteSettings _siteSettings;
+
+        public ClientController(IClientService clientService,IOptions<SiteSettings> settings)
         {
             _clientService = clientService;
+            _siteSettings = settings.Value;
+
         }
 
         [HttpGet]
