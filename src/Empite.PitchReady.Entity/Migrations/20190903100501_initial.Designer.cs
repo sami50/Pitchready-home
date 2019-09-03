@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Empite.PitchReady.Entity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190903064008_initial")]
+    [Migration("20190903100501_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
