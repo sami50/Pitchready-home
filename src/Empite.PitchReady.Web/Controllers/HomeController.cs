@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Empite.PitchReady.Service;
 using Microsoft.AspNetCore.Mvc;
 using Empite.PitchReady.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
 namespace Empite.PitchReady.Web.Controllers
@@ -18,7 +20,6 @@ namespace Empite.PitchReady.Web.Controllers
             _siteSettings = settings.Value;
 
         }
-
         public IActionResult Index()
         {
             return View("Index", _siteSettings.Environment);
