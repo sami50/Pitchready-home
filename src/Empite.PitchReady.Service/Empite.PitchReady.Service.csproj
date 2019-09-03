@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Empite.PitchReady.Entity\Empite.PitchReady.Entity.csproj" />
   </ItemGroup>
 

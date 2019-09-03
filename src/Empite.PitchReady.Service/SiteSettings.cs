@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Empite.PitchReady.Web
+namespace Empite.PitchReady.Service
 {
     public class SiteSettings
     {
