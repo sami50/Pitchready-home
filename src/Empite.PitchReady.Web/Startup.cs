@@ -106,7 +106,8 @@ namespace Empite.PitchReady.Web
             var poweruser = new ApplicationUser
             {
                 UserName = Configuration.GetSection("UserSettings")["UserEmail"],
-                Email = Configuration.GetSection("UserSettings")["UserEmail"]
+                Email = Configuration.GetSection("UserSettings")["UserEmail"],
+                CreatedAt = DateTime.UtcNow
             };
             string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
             var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
