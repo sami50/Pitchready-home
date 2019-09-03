@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Empite.PitchReady.Entity
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Client> Clients { get; set; }
 
