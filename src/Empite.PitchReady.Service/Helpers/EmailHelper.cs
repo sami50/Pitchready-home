@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -13,10 +14,12 @@ namespace Empite.PitchReady.Service
     public class EmailHelper : IEmailHelper
     {
         private readonly EmailSettings _emailSettings;
+        private readonly IHostingEnvironment _environment;
 
         public EmailHelper(
-            IOptions<EmailSettings> emailSettings)
+            IOptions<EmailSettings> emailSettings, IHostingEnvironment environment)
         {
+            _environment = environment;
             _emailSettings = emailSettings.Value;
         }
 
@@ -30,11 +33,12 @@ namespace Empite.PitchReady.Service
                 mimeMessage.Subject = subject;
 
                 var builder = new StringBuilder();
+                var path = Path.Combine(_environment.ContentRootPath, "Opt/Templates", $"{templateName}");
 
-                //using (var reader = File.OpenText($"Templates\\{templateName}"))
-                //{
-                //    builder.Append(reader.ReadToEnd());
-                //}
+                using (var reader = File.OpenText(path))
+                {
+                    builder.Append(reader.ReadToEnd());
+                }
 
                 foreach (KeyValuePair<string, string> property in properties)
                 {
@@ -43,7 +47,7 @@ namespace Empite.PitchReady.Service
 
                 mimeMessage.Body = new TextPart("html")
                 {
-                    Text = "<html><h1>Test</h1>" + builder + "</html>" //builder.ToString() //"<html><h1>Test</h1>" +message+"</html>"
+                    Text = builder.ToString() //"<html><h1>Test</h1>" +message+"</html>"
                 };
 
                 using (var client = new SmtpClient())
