@@ -29,7 +29,7 @@ namespace Empite.PitchReady.Service
                 mimeMessage.Subject = subject;
                 mimeMessage.Body = new TextPart("html")
                 {
-                    Text = message
+                    Text = "<html><h1>Test</h1>"+message+"</html>"
                 };
                 using (var client = new SmtpClient())
                 {
