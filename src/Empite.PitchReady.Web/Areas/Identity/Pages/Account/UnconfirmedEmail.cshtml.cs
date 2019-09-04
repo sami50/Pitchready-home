@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Empite.PitchReady.Entity;
+using Empite.PitchReady.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -17,9 +18,9 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
     public class UnconfirmedEmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailHelper _emailSender;
 
-        public UnconfirmedEmailModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public UnconfirmedEmailModel(UserManager<ApplicationUser> userManager, IEmailHelper emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -95,8 +96,11 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
                     values: new { userId = user.Id, code = code },
                     protocol: Request.Scheme);
 
+                var body = new Dictionary<string, string>();
+                body.Add("$$message$$", $"Please confirm your account by < a href = '{HtmlEncoder.Default.Encode(callbackUrl)}' > clicking here </ a >.");
+
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by < a href = '{HtmlEncoder.Default.Encode(callbackUrl)}' > clicking here </ a >.");
+                    body, "ForgotPassword.html");
 
                 return RedirectToPage("./CheckEmail");
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
@@ -9,17 +10,17 @@ using MimeKit;
 
 namespace Empite.PitchReady.Service
 {
-    public class EmailSender : IEmailSender
+    public class EmailHelper : IEmailHelper
     {
         private readonly EmailSettings _emailSettings;
 
-        public EmailSender(
+        public EmailHelper(
             IOptions<EmailSettings> emailSettings)
         {
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, Dictionary<string, string> properties, string templateName)
         {
             try
             {
@@ -27,10 +28,24 @@ namespace Empite.PitchReady.Service
                 mimeMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.Sender));
                 mimeMessage.To.Add(new MailboxAddress(email));
                 mimeMessage.Subject = subject;
+
+                var builder = new StringBuilder();
+
+                using (var reader = File.OpenText($"Templates\\{templateName}"))
+                {
+                    builder.Append(reader.ReadToEnd());
+                }
+
+                foreach (KeyValuePair<string, string> property in properties)
+                {
+                    builder.Replace(property.Key, property.Value);
+                }
+
                 mimeMessage.Body = new TextPart("html")
                 {
-                    Text = "<html><h1>Test</h1>"+message+"</html>"
+                    Text = builder.ToString() //"<html><h1>Test</h1>" +message+"</html>"
                 };
+
                 using (var client = new SmtpClient())
                 {
                     // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
