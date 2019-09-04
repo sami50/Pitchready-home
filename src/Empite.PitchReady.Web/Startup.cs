@@ -52,7 +52,7 @@ namespace Empite.PitchReady.Web
 
             services.AddScoped<IClientService, ClientService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IEmailHelper, EmailHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
