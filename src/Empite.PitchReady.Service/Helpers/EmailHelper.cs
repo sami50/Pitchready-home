@@ -31,10 +31,10 @@ namespace Empite.PitchReady.Service
 
                 var builder = new StringBuilder();
 
-                using (var reader = File.OpenText($"Templates\\{templateName}"))
-                {
-                    builder.Append(reader.ReadToEnd());
-                }
+                //using (var reader = File.OpenText($"Templates\\{templateName}"))
+                //{
+                //    builder.Append(reader.ReadToEnd());
+                //}
 
                 foreach (KeyValuePair<string, string> property in properties)
                 {
@@ -43,7 +43,7 @@ namespace Empite.PitchReady.Service
 
                 mimeMessage.Body = new TextPart("html")
                 {
-                    Text = builder.ToString() //"<html><h1>Test</h1>" +message+"</html>"
+                    Text = "<html><h1>Test</h1>" + builder + "</html>" //builder.ToString() //"<html><h1>Test</h1>" +message+"</html>"
                 };
 
                 using (var client = new SmtpClient())
