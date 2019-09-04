@@ -19,4 +19,14 @@
     <ProjectReference Include="..\Empite.PitchReady.Service\Empite.PitchReady.Service.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Update="Templates\Activation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\ForgotPassword.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
