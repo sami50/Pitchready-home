@@ -9,19 +9,6 @@ namespace Empite.PitchReady.Entity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    ID = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IdentityRoles",
                 columns: table => new
                 {
@@ -80,6 +67,26 @@ namespace Empite.PitchReady.Entity.Migrations
                         principalTable: "IdentityRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Clients_IdentityUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "IdentityUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,6 +173,11 @@ namespace Empite.PitchReady.Entity.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_ApplicationUserId",
+                table: "Clients",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityRoleClaims_RoleId",

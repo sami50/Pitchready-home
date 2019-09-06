@@ -34,7 +34,7 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
@@ -61,8 +61,11 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
             public bool TOSAgree { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public void OnGet(string userId, string code, string returnUrl = null)
         {
+            //var input=new InputModel();
+            Input.Email = "asdadasd@wer.hg";
+            ModelState.Clear();
             ReturnUrl = returnUrl;
         }
 
