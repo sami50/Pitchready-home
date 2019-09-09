@@ -100,6 +100,7 @@ namespace Empite.PitchReady.Web
             //adding custom roles
             var RoleManager = serviceProvider.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
             string[] roleNames = { "Admin", "Client", "Athlete" };
             IdentityResult roleResult;
             foreach (var roleName in roleNames)
@@ -117,7 +118,9 @@ namespace Empite.PitchReady.Web
                 UserName = Configuration.GetSection("UserSettings")["UserEmail"],
                 Email = Configuration.GetSection("UserSettings")["UserEmail"],
                 CreatedAt = DateTime.UtcNow,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                FirstName = "Admin",
+                LastName = "Last"
             };
             string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
             var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
@@ -128,6 +131,7 @@ namespace Empite.PitchReady.Web
                 {
                     //here we tie the new user to the "Admin" role 
                     await UserManager.AddToRoleAsync(poweruser, "Admin");
+
                 }
             }
         }

@@ -37,7 +37,7 @@ namespace Empite.PitchReady.Web.Areas.Admin.Controllers
             Client client;
             foreach (var item in clients)
             {
-                client = new Client{FirstName = item.FirstName,LastName = item.LastName,Email=item.ApplicationUser.Email,IsActive = item.ApplicationUser.EmailConfirmed, UserGuid = item.ApplicationUserId};
+                client = new Client{FirstName = item.ApplicationUser.FirstName,LastName = item.ApplicationUser.LastName,Email=item.ApplicationUser.Email,IsActive = item.ApplicationUser.EmailConfirmed, UserGuid = item.ApplicationUserId};
                 clientList.Add(client);
             }
             return View(clientList);
