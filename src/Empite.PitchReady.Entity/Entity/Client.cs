@@ -9,6 +9,8 @@ namespace Empite.PitchReady.Entity
         public string ID { get; set; } = Guid.NewGuid().ToString();
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
 
     }
 }

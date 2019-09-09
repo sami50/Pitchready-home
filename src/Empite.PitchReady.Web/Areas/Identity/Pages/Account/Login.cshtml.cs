@@ -79,6 +79,16 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    IList<string> roles = await _signInManager.UserManager.GetRolesAsync(user);
+                    switch (roles[0])
+                    {
+                        case "Admin":
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        case "Client":
+                            return RedirectToAction("Index", "Home", new { area = "Client" });
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

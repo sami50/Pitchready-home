@@ -1,0 +1,17 @@
+﻿@model List<Empite.PitchReady.Web.Areas.Admin.Client>
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>List</h1>
+@Html.ActionLink("Add Client", "Create", "Client")
+<p style="color: red">@TempData["invitation"]</p>
+<table border="1">
+    <tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Status</th></tr>
+    @foreach (var client in @Model)
+    {
+        var status = client.IsActive ? "Active" : "Not Activated";
+        <tr><td>@client.FirstName</td><td>@client.LastName</td><td>@client.Email</td><td>@status</td><td>@Html.ActionLink("Send Invite", "SendInvite", new { userGuid = @client.UserGuid })</td></tr>
+    }
+</table>

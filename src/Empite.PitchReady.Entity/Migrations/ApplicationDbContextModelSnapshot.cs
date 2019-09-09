@@ -74,11 +74,15 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.Property<string>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Clients");
                 });
@@ -188,6 +192,13 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("IdentityUserTokens");
+                });
+
+            modelBuilder.Entity("Empite.PitchReady.Entity.Client", b =>
+                {
+                    b.HasOne("Empite.PitchReady.Entity.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

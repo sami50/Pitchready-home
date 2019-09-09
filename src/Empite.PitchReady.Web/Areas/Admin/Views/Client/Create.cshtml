@@ -1,0 +1,31 @@
+﻿@model Empite.PitchReady.Web.Areas.Admin.Client
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Add Client</h1>
+<p style="color: red">@ViewBag.result</p>
+
+@using (Html.BeginForm("Create", "Client", FormMethod.Post))
+{
+    <ul>
+        <li>
+            <label>First Name</label>
+            @Html.TextBoxFor(x => x.FirstName, new { maxlength = 100 })
+        </li>
+        <li>
+            <label>Last Name</label>
+            @Html.TextBoxFor(x => x.LastName, new { maxlength = 100 })
+        </li>
+        <li>
+            <label>Email</label>
+            @Html.TextBoxFor(x => x.Email, new { maxlength = 100 })
+        </li>
+    </ul>
+    
+    
+
+    <input type="submit" value="Save" />
+}
+

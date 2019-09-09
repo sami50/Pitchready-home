@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Empite.PitchReady.Entity;
 using Empite.PitchReady.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace Empite.PitchReady.Web.Controllers
         public async Task<IActionResult> SaveClient(string firstName, string lastName)
         {
 
-            return Ok(await _clientService.SaveClient(firstName,lastName));
+            return Ok(await _clientService.SaveClient(firstName,lastName, new ApplicationUser()));
         }
     }
 }

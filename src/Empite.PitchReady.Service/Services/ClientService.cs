@@ -19,16 +19,17 @@ namespace Empite.PitchReady.Service
 
         public async Task<List<Client>> GetClient()
         {
-            return await _applicationDbContext.Clients.AsNoTracking().ToListAsync();
+            return await _applicationDbContext.Clients.Include(x=>x.ApplicationUser).AsNoTracking().ToListAsync();
         }
 
-        public async Task<Client> SaveClient(string firstName, string lastName)
+        public async Task<Client> SaveClient(string firstName, string lastName, ApplicationUser user)
         {
-            Client client = new Client() {FirstName = firstName, LastName = lastName };
+            Client client = new Client() {FirstName = firstName, LastName = lastName, ApplicationUser = user};
             await _applicationDbContext.Clients.AddAsync(client);
             await _applicationDbContext.SaveChangesAsync();
 
             return client;
         }
+
     }
 }

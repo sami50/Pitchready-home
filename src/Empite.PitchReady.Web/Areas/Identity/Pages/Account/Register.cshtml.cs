@@ -34,7 +34,7 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
@@ -59,47 +59,89 @@ namespace Empite.PitchReady.Web.Areas.Identity.Pages.Account
 
             [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the Terms of Service.")]
             public bool TOSAgree { get; set; }
+
+            public string Code { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public async Task OnGet(string userId, string code, string returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+            var aaa = User.Identity.IsAuthenticated;
+            if (aaa)
+            {
+                await _signInManager.SignOutAsync();
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ReturnUrl = returnUrl;
+
+                throw new Exception();
+            }
+            else
+            {
+                Input.Email = user.Email;
+                Input.Code = code;
+                ModelState.Clear();
+                ReturnUrl = returnUrl;
+            }
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            var aaa = User.Identity.IsAuthenticated;
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, CreatedAt = DateTime.UtcNow};
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-                    await _userManager.AddToRoleAsync(user, "Admin");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    var body = new Dictionary<string, string>();
-                    body.Add("$$message$$", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        body, "Activation.html");
-
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return LocalRedirect(returnUrl);
-
-                    return RedirectToPage("./CheckEmail");
+                    return NotFound($"Unable to find user '{Input.Email}'.");
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user,Input.Password);
+                    //user.EmailConfirmed = true;
+                    var pwResponse = await _userManager.UpdateAsync(user);
+
+                    var result = await _userManager.ConfirmEmailAsync(user, Input.Code);
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException(
+                            $"Error confirming email for user with ID '{Input.Email}':");
+                    }
+
+                    //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, CreatedAt = DateTime.UtcNow};
+                    //var result = await _userManager.CreateAsync(user, Input.Password);
+                    //if (result.Succeeded)
+                    //{
+                    //    _logger.LogInformation("User created a new account with password.");
+                    //    await _userManager.AddToRoleAsync(user, "Admin");
+
+                    //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //    var callbackUrl = Url.Page(
+                    //        "/Account/ConfirmEmail",
+                    //        pageHandler: null,
+                    //        values: new { userId = user.Id, code = code },
+                    //        protocol: Request.Scheme);
+
+                    //    var body = new Dictionary<string, string>();
+                    //    body.Add("$$message$$", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    //    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //        body, "Activation.html");
+
+                    //    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    //return LocalRedirect(returnUrl);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return RedirectToPage("./Login");
                 }
+
+
+               
             }
 
             // If we got this far, something failed, redisplay form

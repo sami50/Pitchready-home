@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Empite.PitchReady.Entity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190903100501_initial")]
+    [Migration("20190906103431_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,11 +76,15 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.Property<string>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Clients");
                 });
@@ -190,6 +194,13 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("IdentityUserTokens");
+                });
+
+            modelBuilder.Entity("Empite.PitchReady.Entity.Client", b =>
+                {
+                    b.HasOne("Empite.PitchReady.Entity.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

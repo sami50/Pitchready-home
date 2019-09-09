@@ -72,7 +72,6 @@ namespace Empite.PitchReady.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             app.UseAuthentication();
 
@@ -81,7 +80,11 @@ namespace Empite.PitchReady.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "AreaRoute",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseCookiePolicy();
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -113,7 +116,8 @@ namespace Empite.PitchReady.Web
             {
                 UserName = Configuration.GetSection("UserSettings")["UserEmail"],
                 Email = Configuration.GetSection("UserSettings")["UserEmail"],
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
             };
             string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
             var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
