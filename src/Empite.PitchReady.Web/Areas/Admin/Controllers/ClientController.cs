@@ -37,7 +37,7 @@ namespace Empite.PitchReady.Web.Areas.Admin.Controllers
             Client client;
             foreach (var item in clients)
             {
-                client = new Client{FirstName = item.FirstName,LastName = item.LastName,Email=item.ApplicationUser.Email,IsActive = item.ApplicationUser.EmailConfirmed};
+                client = new Client{FirstName = item.FirstName,LastName = item.LastName,Email=item.ApplicationUser.Email,IsActive = item.ApplicationUser.EmailConfirmed, UserGuid = item.ApplicationUserId};
                 clientList.Add(client);
             }
             return View(clientList);
@@ -60,28 +60,7 @@ namespace Empite.PitchReady.Web.Areas.Admin.Controllers
                 _logger.LogInformation("User created a new account with password.");
                 await _userManager.AddToRoleAsync(user, "Client");
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
-                //if (_user == null)
-                //{
-                //}
-
-
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code = code },
-                    protocol: Request.Scheme);
-
-                var body = new Dictionary<string, string>();
-                body.Add("$$message$$", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                await _emailSender.SendEmailAsync(client.Email, "Confirm your email",
-                    body, "Activation.html");
-
-                //await _signInManager.SignInAsync(user, isPersistent: false);
-                //return LocalRedirect(returnUrl);
-                ViewBag.result = "Invitation Sent";
+               
 
                 return View(client);
             }
@@ -94,6 +73,30 @@ namespace Empite.PitchReady.Web.Areas.Admin.Controllers
 
 
         }
+
+        public async Task<IActionResult> SendInvite(string userGuid)
+        {
+            var user = await _userManager.FindByIdAsync(userGuid);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = user.Id, code = code },
+                protocol: Request.Scheme);
+
+            var body = new Dictionary<string, string>();
+            body.Add("$$message$$", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                body, "Activation.html");
+
+            //await _signInManager.SignInAsync(user, isPersistent: false);
+            //return LocalRedirect(returnUrl);
+            TempData["invitation"] = "Invitation Sent";
+            return RedirectToAction("List", "Client",
+                new { area = "Admin" });
+        }
+
 
     }
 }

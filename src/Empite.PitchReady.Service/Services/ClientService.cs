@@ -30,5 +30,6 @@ namespace Empite.PitchReady.Service
 
             return client;
         }
+
     }
 }

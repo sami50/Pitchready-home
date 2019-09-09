@@ -72,7 +72,6 @@ namespace Empite.PitchReady.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             app.UseAuthentication();
 
@@ -85,6 +84,7 @@ namespace Empite.PitchReady.Web
                     name: "AreaRoute",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseCookiePolicy();
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

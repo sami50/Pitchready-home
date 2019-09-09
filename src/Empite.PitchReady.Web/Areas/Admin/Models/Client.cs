@@ -11,5 +11,6 @@ namespace Empite.PitchReady.Web.Areas.Admin
         public string LastName { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
+        public string UserGuid { get; set; }
     }
 }
