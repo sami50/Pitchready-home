@@ -24,11 +24,10 @@ namespace Empite.PitchReady.Service
 
         public async Task<Client> SaveClient(string firstName, string lastName, ApplicationUser user)
         {
-            Client client = new Client() {FirstName = firstName, LastName = lastName, ApplicationUser = user};
-            await _applicationDbContext.Clients.AddAsync(client);
-            await _applicationDbContext.SaveChangesAsync();
-
-            return client;
+                Client client = new Client() { ApplicationUser = user, CompanyName = "test" };
+                await _applicationDbContext.Clients.AddAsync(client);
+                await _applicationDbContext.SaveChangesAsync();
+                return client;
         }
 
     }

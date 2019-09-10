@@ -9,6 +9,19 @@ namespace Empite.PitchReady.Entity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Country",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Country", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityRoles",
                 columns: table => new
                 {
@@ -41,11 +54,26 @@ namespace Empite.PitchReady.Entity.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IdentityUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "State",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_State", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,26 +95,6 @@ namespace Empite.PitchReady.Entity.Migrations
                         principalTable: "IdentityRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    ID = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Clients_IdentityUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "IdentityUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,10 +182,59 @@ namespace Empite.PitchReady.Entity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    CompanyName = table.Column<string>(nullable: true),
+                    AddressLine1 = table.Column<string>(nullable: true),
+                    AddressLine2 = table.Column<string>(nullable: true),
+                    Suburb = table.Column<string>(nullable: true),
+                    PostCode = table.Column<string>(nullable: true),
+                    StateID = table.Column<int>(nullable: true),
+                    CountryID = table.Column<int>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Mobile = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Clients_IdentityUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "IdentityUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Clients_Country_CountryID",
+                        column: x => x.CountryID,
+                        principalTable: "Country",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Clients_State_StateID",
+                        column: x => x.StateID,
+                        principalTable: "State",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ApplicationUserId",
                 table: "Clients",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_CountryID",
+                table: "Clients",
+                column: "CountryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_StateID",
+                table: "Clients",
+                column: "StateID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityRoleClaims_RoleId",
@@ -236,6 +293,12 @@ namespace Empite.PitchReady.Entity.Migrations
 
             migrationBuilder.DropTable(
                 name: "IdentityUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Country");
+
+            migrationBuilder.DropTable(
+                name: "State");
 
             migrationBuilder.DropTable(
                 name: "IdentityRoles");

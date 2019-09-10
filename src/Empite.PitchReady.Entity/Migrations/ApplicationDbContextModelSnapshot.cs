@@ -34,6 +34,10 @@ namespace Empite.PitchReady.Entity.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -74,17 +78,59 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.Property<string>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AddressLine1");
+
+                    b.Property<string>("AddressLine2");
+
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("CompanyName");
 
-                    b.Property<string>("LastName");
+                    b.Property<int?>("CountryID");
+
+                    b.Property<string>("Mobile");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PostCode");
+
+                    b.Property<int?>("StateID");
+
+                    b.Property<string>("Suburb");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("CountryID");
+
+                    b.HasIndex("StateID");
+
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Empite.PitchReady.Entity.Country", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Country");
+                });
+
+            modelBuilder.Entity("Empite.PitchReady.Entity.State", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("State");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -199,6 +245,14 @@ namespace Empite.PitchReady.Entity.Migrations
                     b.HasOne("Empite.PitchReady.Entity.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Empite.PitchReady.Entity.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryID");
+
+                    b.HasOne("Empite.PitchReady.Entity.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
