@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Empite.PitchReady.Entity
@@ -18,6 +19,6 @@ namespace Empite.PitchReady.Entity
         public string Mobile { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public string ApplicationUserId { get; set; }
-
+        public List<Athlete> Athlete { get; set; }
     }
 }

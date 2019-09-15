@@ -1,0 +1,27 @@
+﻿.i_dashboard {
+    content: url("../images/dashboard.svg");
+    padding: 2px 10px 0px 0px;
+    color: white;
+    background-color: inherit;
+}
+
+    /* Sidebar links */
+.i_dashboard a {
+    display: block;
+    color: white;
+    text-decoration: none;
+}
+
+        /* Active/current link #18741E */
+.i_dashboard a.active {
+    background-color: rgb(42,62,78,0.6);
+    color: #18741E;
+}
+
+        /* Links on mouse-over */
+.i_dashboard a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+

@@ -12,6 +12,7 @@ namespace Empite.PitchReady.Entity
         public DbSet<Client> Clients { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<State> State { get; set; }
+        public DbSet<Athlete> Athletes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

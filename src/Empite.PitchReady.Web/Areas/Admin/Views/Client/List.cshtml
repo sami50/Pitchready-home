@@ -4,14 +4,43 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>List</h1>
-@Html.ActionLink("Add Client", "Create", "Client")
-<p style="color: red">@TempData["invitation"]</p>
-<table border="1">
-    <tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Status</th></tr>
-    @foreach (var client in @Model)
-    {
-        var status = client.IsActive ? "Active" : "Not Activated";
-        <tr><td>@client.FirstName</td><td>@client.LastName</td><td>@client.Email</td><td>@status</td><td>@Html.ActionLink("Send Invite", "SendInvite", new { userGuid = @client.UserGuid })</td></tr>
-    }
-</table>
+
+<div class="header bar mt-1" >
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" class="form-group" placeholder="Search..">
+            <span>
+                <i class="fa fa-search text-grey"
+                   aria-hidden="true"></i>
+            </span>
+        </div>
+        <div class="col-md-3">
+<input type="button" class="btn btn-danger"  value="Send Invite"/>
+        </div>
+        <div class="col-md-3">
+            <input type="button" class="btn btn-danger" value="Add client" />
+        </div>
+        
+    </div>
+</div>
+    @Html.ActionLink("Add Client", "Create", "Client")
+    <p style="color: red">@TempData["invitation"]</p>
+    <table class="table table-striped">
+        <tr><th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        </tr>
+        @foreach (var client in @Model)
+        {
+            var status = client.IsActive ? "Active" : "Not Activated";
+            <tr><td>@client.FirstName</td>
+        <td>@client.LastName</td>
+        <td>@client.Email</td>
+        <td>@status</td>
+        <td>@Html.ActionLink("Send Invite", "SendInvite", new { userGuid = @client.UserGuid })</td>
+        
+        </tr>
+        }
+    </table>
+   

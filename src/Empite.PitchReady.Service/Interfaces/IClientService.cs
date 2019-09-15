@@ -8,6 +8,7 @@ namespace Empite.PitchReady.Service
     {
         Task<List<Client>> GetClient();
         Task<Client> SaveClient(string firstName, string lastName, ApplicationUser user);
+        Task<Athlete> SaveAthlete(Athlete athlete);
 
     }
 }
